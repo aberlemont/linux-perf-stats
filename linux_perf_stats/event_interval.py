@@ -50,7 +50,7 @@ def get_event_itv_quantile(df,
     criteria = (df.event == evt1) & (df.next_event == evt2)
     df = df.loc[criteria]
 
-    return tmp.duration.quantile(quantile_value)
+    return df.duration.quantile(quantile_value)
 
 def print_event_intervals(df, evt1, evt2, filter = False):
     """Print statistics on time interval between 2 events
