@@ -59,11 +59,19 @@ def plot_event_timeline(df, offset = 0, delay = '1ms', events = None):
             label += ' on CPU {:d}'.format(cpu)
             label += '(value: {:d})'.format(plot_value)
             pt.plot(tmp2.usecs, tmp2.plot_value, '.', label = label)
-    
-    labels_area = 3
-    pt.set_ylim(0, plot_value + labels_area)
-    last_us = (last_ns - first_ns) / float(10 ** 3) 
-    pt.set_xlim(-10, last_us + 5)
+
+    # Compute the time window to display
+    width_ns = last_ns - first_ns
+    border_ns = width_ns * 0.02
+    first_displayed_us = -border_ns / float(10 ** 3)
+    last_displayed_us = (width_ns + border_ns) / float(10 ** 3)
+    pt.set_xlim(first_displayed_us, last_displayed_us)
+
+    # Leave room for the legend cell
+    legend_height = 2 + plot_value * 1.5
+    pt.set_ylim(0, plot_value + legend_height)
+
+    # Title, label stuff, etc.
     pt.set_title('Events display')
     pt.set_ylabel('Events')
     pt.set_xlabel('Time (us)')
